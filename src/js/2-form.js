@@ -1,7 +1,9 @@
+let form, emailInput, messageInput;
+
 window.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('form');
-    const emailInput = document.querySelector('#email');
-    const messageInput = document.querySelector('#message');
+    form = document.querySelector('form');
+    emailInput = document.querySelector('input[name="email"]');
+    messageInput = document.querySelector('textarea[name="message"]');
     
     const storedData = localStorage.getItem('feedback-form-state');
     if (storedData) {
@@ -9,36 +11,33 @@ window.addEventListener('DOMContentLoaded', () => {
         emailInput.value = email;
         messageInput.value = message;
     }
-});
 
-form.addEventListener('input', event => {
-    const { target } = event;
-    if (target.matches('#email, #message')) {
-        const formData = {
-            email: emailInput.value.trim(),
-            message: messageInput.value.trim()
-        };
-        localStorage.setItem('feedback-form-state', JSON.stringify(formData));
-    }
-});
-
-form.addEventListener('submit', event => {
-    event.preventDefault();
-    
-    const emailInput = document.querySelector('#email');
-    const messageInput = document.querySelector('#message');
-
-    if (emailInput.value.trim() === '' || messageInput.value.trim() === '') {
-        alert('Будь ласка, заповніть всі поля форми.');
-        return;
-    }
-
-    console.log('Form submitted:', {
-        email: emailInput.value,
-        message: messageInput.value
+    form.addEventListener('input', event => {
+        const { target } = event;
+        if (target.matches('input[name="email"], textarea[name="message"]')) {
+            const formData = {
+                email: emailInput.value.trim(),
+                message: messageInput.value.trim()
+            };
+            localStorage.setItem('feedback-form-state', JSON.stringify(formData));
+        }
     });
 
-    localStorage.removeItem('feedback-form-state');
-    emailInput.value = '';
-    messageInput.value = '';
+    form.addEventListener('submit', event => {
+        event.preventDefault();
+        
+        if (emailInput.value.trim() === '' || messageInput.value.trim() === '') {
+            alert('Будь ласка, заповніть всі поля форми.');
+            return;
+        }
+
+        console.log('Form submitted:', {
+            email: emailInput.value,
+            message: messageInput.value
+        });
+
+        localStorage.removeItem('feedback-form-state');
+        emailInput.value = '';
+        messageInput.value = '';
+    });
 });
