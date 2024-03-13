@@ -1,5 +1,8 @@
-// Перевіряємо чи є збережені дані в локальному сховищі
 window.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form');
+    const emailInput = document.querySelector('#email');
+    const messageInput = document.querySelector('#message');
+    
     const storedData = localStorage.getItem('feedback-form-state');
     if (storedData) {
         const { email, message } = JSON.parse(storedData);
@@ -8,23 +11,34 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Зберігаємо дані у локальне сховище під час введення у поля форми
 form.addEventListener('input', () => {
+    const emailInput = document.querySelector('#email');
+    const messageInput = document.querySelector('#message');
+    
     const formData = {
-        email: emailInput.value,
-        message: messageInput.value
+        email: emailInput.value.trim(),
+        message: messageInput.value.trim()
     };
     localStorage.setItem('feedback-form-state', JSON.stringify(formData));
 });
 
-// Скидаємо дані у локальному сховищі під час відправки форми
 form.addEventListener('submit', event => {
     event.preventDefault();
-    localStorage.removeItem('feedback-form-state');
-    emailInput.value = '';
-    messageInput.value = '';
+    
+    const emailInput = document.querySelector('#email');
+    const messageInput = document.querySelector('#message');
+
+    if (emailInput.value.trim() === '' || messageInput.value.trim() === '') {
+        alert('Будь ласка, заповніть всі поля форми.');
+        return;
+    }
+
     console.log('Form submitted:', {
         email: emailInput.value,
         message: messageInput.value
     });
+
+    localStorage.removeItem('feedback-form-state');
+    emailInput.value = '';
+    messageInput.value = '';
 });
