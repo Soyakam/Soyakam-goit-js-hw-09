@@ -11,15 +11,15 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-form.addEventListener('input', () => {
-    const emailInput = document.querySelector('#email');
-    const messageInput = document.querySelector('#message');
-    
-    const formData = {
-        email: emailInput.value.trim(),
-        message: messageInput.value.trim()
-    };
-    localStorage.setItem('feedback-form-state', JSON.stringify(formData));
+form.addEventListener('input', event => {
+    const { target } = event;
+    if (target.matches('#email, #message')) {
+        const formData = {
+            email: emailInput.value.trim(),
+            message: messageInput.value.trim()
+        };
+        localStorage.setItem('feedback-form-state', JSON.stringify(formData));
+    }
 });
 
 form.addEventListener('submit', event => {
